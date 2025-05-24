@@ -1,0 +1,18 @@
+from uuid import UUID
+
+from pydantic import Field
+
+from point.types import TonAddress
+from point.view.base import PointBase
+
+
+class EmployeeReceiver(PointBase):
+    id: UUID
+    name: str = Field(max_length=32)
+    profession: str = Field(max_length=32)
+    icon: str = Field(max_length=1024)
+
+
+class ReceiversOut(PointBase):
+    place_wallet: TonAddress | None = None
+    employees: list[EmployeeReceiver] = Field(default_factory=list)
