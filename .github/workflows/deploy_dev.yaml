@@ -99,7 +99,7 @@ jobs:
         env:
           IMAGE_REF: ${{ steps.meta.outputs.tags }}
         run: |
-          docker -c remote compose -f docker-compose.dev.yaml up --build --pull always
+          docker -c remote compose -f docker-compose.dev.yaml up -d --build --pull always
 
       - name: cleanup
         run: rm -rf ~/.ssh
