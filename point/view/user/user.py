@@ -1,9 +1,11 @@
-from pydantic import Field
+from typing import Self
+
+from pydantic import Field, model_validator
 
 from point.types import UserType, ImageUrl
-from point.view.base import PointBase
+from point.view import PointBase
 
-from . import EmployeeOut, ConsumerOut, EmployeePublicOut
+from . import EmployeeOut, ConsumerOut, EmployeePublicOut, ConsumerPublicOut
 
 
 class AuthUserIn(PointBase):
@@ -24,6 +26,15 @@ class AuthUserOut(AuthUserIn):
     user_type: UserType
     account: EmployeeOut | ConsumerOut
 
+    @model_validator(mode="after")
+    def validate_model(self) -> Self:
+        if (
+                self.user_type == UserType.consumer and not isinstance(self.account, ConsumerOut) or
+                self.user_type == UserType.employee and not isinstance(self.account, EmployeeOut)
+        ):
+            raise ValueError("Mismatch user type and account model")
+        return self
+
 
 class AuthUser(PointBase):
     id: int
@@ -36,4 +47,4 @@ class UserPublicOut(PointBase):
     username: str
     rank: int
     user_type: UserType
-    account: EmployeePublicOut | ConsumerOut
+    account: EmployeePublicOut | ConsumerPublicOut

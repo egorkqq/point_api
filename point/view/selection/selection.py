@@ -3,7 +3,7 @@ from uuid import UUID
 from pydantic import Field
 
 from point.types import ImageUrl
-from point.view.base import PointBase
+from point.view import PointBase
 
 
 class Creator(PointBase):
@@ -11,17 +11,13 @@ class Creator(PointBase):
     icon: ImageUrl
 
 
-class MainPlace(PointBase):
-    name: str = Field(max_length=64)
-    description: str = Field(max_length=256)
-    icons: list[ImageUrl] = Field(default_factory=list)
-
-
 class SelectionPreview(PointBase):
     id: UUID
     creator: Creator
     main_area: str = Field(max_length=32)
-    main_place: MainPlace
+    name: str = Field(max_length=64)
+    description: str = Field(max_length=256)
+    icons: list[ImageUrl] = Field(default_factory=list)
     places_count: int = Field(default=0, ge=0)
     preview_places_icons: list[ImageUrl] = Field(default_factory=list)
 

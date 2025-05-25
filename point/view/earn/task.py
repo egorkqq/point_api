@@ -2,7 +2,7 @@ from uuid import UUID
 
 from pydantic import Field
 
-from point.view.base import PointBase
+from point.view import PointBase
 
 
 class TaskOut(PointBase):

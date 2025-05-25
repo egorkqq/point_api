@@ -1,12 +1,10 @@
 from decimal import Decimal
 from uuid import UUID
 
-from pydantic import Field
+from pydantic import Field, AnyUrl
 
 from point.types import ImageUrl
-from point.view.base import PointBase
-
-from .common import Point
+from point.view import PointBase, PointOut, PointIn
 
 
 class PlacePreview(PointBase):
@@ -14,7 +12,7 @@ class PlacePreview(PointBase):
     name: str = Field(max_length=128)
     photo: ImageUrl
     establishment_id: UUID
-    position: Point
+    position: PointOut
     rating: Decimal = Field(ge=0)
 
 
@@ -30,8 +28,15 @@ class MenuItem(PointBase):
     cost: Cost
 
 
+class NearPlaceCriteria(PointBase):
+    name: str | None = Field(max_length=128)
+    location: PointIn
+
+
 class PlaceOut(PlacePreview):
     description: str = Field(max_length=512)
+    user_rating: int | None = Field(default=None, ge=0, le=5)
+    channel_link: AnyUrl | None = Field(default=None, max_length=512)
     icon: ImageUrl
     gallery: list[ImageUrl] = Field(default_factory=list)
     menu: list[MenuItem] = Field(default_factory=list)

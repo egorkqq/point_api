@@ -1,8 +1,8 @@
 from pydantic import Field
 
-from point.view.base import PointBase
+from point.view import PointBase
 
-from .user import AuthUserIn, AuthUserOut
+from . import AuthUserIn, AuthUserOut
 
 
 class AuthIn(PointBase):

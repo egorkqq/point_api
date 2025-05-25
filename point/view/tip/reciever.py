@@ -3,7 +3,7 @@ from uuid import UUID
 from pydantic import Field
 
 from point.types import TonAddress
-from point.view.base import PointBase
+from point.view import PointBase
 
 
 class EmployeeReceiver(PointBase):

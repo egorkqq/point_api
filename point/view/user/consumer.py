@@ -2,7 +2,8 @@ from uuid import UUID
 
 from pydantic import Field
 
-from point.view.base import PointBase
+from point.types import TonAddress
+from point.view import PointBase
 
 
 class ConsumerMeta(PointBase):
@@ -15,4 +16,10 @@ class ConsumerPublicOut(PointBase):
 
 
 class ConsumerOut(ConsumerPublicOut):
+    wallet: TonAddress
     meta: ConsumerMeta
+
+
+class ConsumerUpdateIn(PointBase):
+    wallet: TonAddress | None = None
+    meta: ConsumerMeta | None = None

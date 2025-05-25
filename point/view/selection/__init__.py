@@ -1,1 +1,1 @@
-from .selection import Creator, MainPlace, SelectionPreview, PlaceItem, SelectionOut
+from .selection import Creator, SelectionPreview, PlaceItem, SelectionOut

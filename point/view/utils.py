@@ -1,17 +1,16 @@
 import random
-from uuid import UUID
+from decimal import Decimal
 
-from pydantic import Field
-
-from point.types import ImageUrl, TonAddress
-from point.view.base import PointBase
-
-
-class Establishment(PointBase):
-    id: UUID
-    alias: str = Field(max_length=128)
-    icon: ImageUrl
+from point.types import TonAddress
+from point.view import PointIn
 
 
 def random_address() -> TonAddress:
     return TonAddress(root=f"0:{random.randbytes(32).hex()}")
+
+
+def point_distance(point1: PointIn, point2: PointIn) -> Decimal:
+    return (
+            (point1.latitude - point2.latitude) ** 2 +
+            (point1.longitude - point2.longitude) ** 2
+    ).sqrt()

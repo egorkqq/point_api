@@ -1,4 +1,4 @@
-import uuid
+from uuid import uuid4
 
 from fastapi import APIRouter
 
@@ -9,11 +9,13 @@ from point.view import (
     AuthOut,
     AuthUserOut,
     ConsumerOut,
+    JobPlaceOut,
+    PurposeOut,
     EmployeeMeta,
     EmployeeOut,
     ConsumerMeta,
     random_address,
-    fake
+    fake,
 )
 
 from point.auth import create_token, validate_telegram_init_data
@@ -27,7 +29,7 @@ async def post_auth(auth_data: AuthIn, user_type: UserType = UserType.consumer) 
         raise APIException("Wrong credentials", 401)
 
     payload = {
-        "iss": uuid.uuid4().hex,
+        "iss": uuid4().hex,
         "username": auth_data.user.username,
         "id": str(auth_data.user.id),
     }
@@ -40,14 +42,24 @@ async def post_auth(auth_data: AuthIn, user_type: UserType = UserType.consumer) 
         bonus_balance=fake.random_int(1, 10 ** 10),
         user_type=user_type,
         account=ConsumerOut(
-            id=uuid.uuid4(),
+            id=uuid4(),
             typs_left=fake.random_int(1, 10 ** 10),
+            wallet=random_address(),
             meta=ConsumerMeta(show_tips_left=fake.boolean())
         ) if user_type == UserType.consumer else EmployeeOut(
-            id=uuid.uuid4(),
+            id=uuid4(),
             wallet=random_address(),
-            job_place_id=uuid.uuid4(),
-            purpose_id=uuid.uuid4(),
+            job_place=JobPlaceOut(
+                id=uuid4(),
+                name=fake.name(),
+                address=fake.wallet(),
+            ),
+            purpose=PurposeOut(
+                id=uuid4(),
+                title=fake.name(),
+                description=fake.text(),
+                icon=fake.image_url(1280, 720)
+            ),
             meta=EmployeeMeta(
                 show_job=fake.boolean(),
                 show_purpose=fake.boolean(),

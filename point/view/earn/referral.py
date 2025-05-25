@@ -1,7 +1,7 @@
 from pydantic import Field
 
 from point.types import ImageUrl
-from point.view.base import PointBase
+from point.view import PointBase
 
 
 class ReferralOut(PointBase):

@@ -3,18 +3,21 @@ from typing import Self
 
 from pydantic import Field, model_validator
 
-from point.view.base import PointBase
+from point.view import PointBase
 
 
-class Point(PointBase):
+class PointIn(PointBase):
     latitude: Decimal = Field(ge=-90, le=90)
     longitude: Decimal = Field(ge=-180, le=180)
+
+
+class PointOut(PointIn):
     address: str = Field(max_length=128)
 
 
 class PointPair(PointBase):
-    upper: Point
-    lower: Point
+    upper: PointIn
+    lower: PointIn
 
     @model_validator(mode="after")
     def validate_model(self) -> Self:

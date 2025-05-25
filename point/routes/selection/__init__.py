@@ -5,4 +5,4 @@ from ...auth import get_user
 
 router = APIRouter(dependencies=[Depends(get_user)])
 
-router.include_router(selection_router, prefix="/selection")
+router.include_router(selection_router)

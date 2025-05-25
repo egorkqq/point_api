@@ -9,13 +9,13 @@ router = APIRouter()
 
 
 @router.get("s/{place_id}")
-async def get_receivers(place_id: UUID, _: AuthUser = Depends(get_user)):
+async def get_receivers(place_id: UUID, _: AuthUser = Depends(get_user)) -> ReceiversOut:
     return ReceiversOut(
         place_wallet=fake.random_element([None, random_address()]),
         employees=[EmployeeReceiver(
             id=uuid4(),
             name=fake.name(),
             profession="waiter",
-            icon=fake.image_url(),
+            icon=fake.image_url(1280, 720),
         ) for _ in range(fake.random_int(1, 10))],
     )

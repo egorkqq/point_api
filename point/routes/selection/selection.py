@@ -2,7 +2,7 @@ from uuid import UUID, uuid4
 
 from fastapi import APIRouter
 
-from point.view import Creator, MainPlace, SelectionPreview, SelectionOut, PlaceItem, fake
+from point.view import Creator, SelectionPreview, SelectionOut, PlaceItem, fake
 
 router = APIRouter(tags=["Selection"])
 
@@ -16,16 +16,14 @@ async def get_selections() -> list[SelectionPreview]:
             id=uuid4(),
             creator=Creator(
                 name=fake.name(),
-                icon=fake.image_url(),
+                icon=fake.image_url(1280, 720),
             ),
             main_area=fake.city(),
-            main_place=MainPlace(
-                name=fake.name(),
-                description=fake.text(),
-                icons=[fake.image_url() for _ in range(2)],
-            ),
+            name=fake.name(),
+            description=fake.text(),
+            icons=[fake.image_url(1280, 720) for _ in range(2)],
             places_count=0,
-            preview_places_icons=[fake.image_url() for _ in range(3)],
+            preview_places_icons=[fake.image_url(1280, 720) for _ in range(3)],
         ))
 
     return selections
@@ -34,17 +32,17 @@ async def get_selections() -> list[SelectionPreview]:
 @router.post("/{selection_id}")
 async def get_selection(selection_id: UUID) -> SelectionOut:
     return SelectionOut(
-            id=selection_id,
-            creator=Creator(
-                name=fake.name(),
-                icon=fake.image_url(),
-            ),
-            main_area=fake.city(),
-            places=[PlaceItem(
-                id=uuid4(),
-                name=fake.name(),
-                description=fake.text(),
-                icon=fake.image_url(),
-                address=fake.address(),
-            ) for _ in range(fake.random_int(1, 10))],
-        )
+        id=selection_id,
+        creator=Creator(
+            name=fake.name(),
+            icon=fake.image_url(1280, 720),
+        ),
+        main_area=fake.city(),
+        places=[PlaceItem(
+            id=uuid4(),
+            name=fake.name(),
+            description=fake.text(),
+            icon=fake.image_url(1280, 720),
+            address=fake.wallet(),
+        ) for _ in range(fake.random_int(1, 10))],
+    )
