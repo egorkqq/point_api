@@ -90,14 +90,13 @@ jobs:
 
       - name: Docker compose
         env:
-          IMAGE_REF: ${{ steps.meta.outputs.tags }}
+          IMAGE_REF: ${{ steps.meta.outputs.tags }}@${{ steps.push.outputs.digest }}
         run: |
           echo "APP_ENV=dev" >>  .env
           echo "ADMIN_AUTH_KEY=${{ secrets.ADMIN_AUTH_KEY }}" >>  .env
           echo "JWT_ALGORITHM=${{ secrets.JWT_ALGORITHM }}" >> .env
           echo "PUBLIC_KEY=${{ secrets.PUBLIC_KEY }}" >> .env
-          docker -c remote compose -f docker-compose.dev.yaml build --pull --no-cache
-          docker -c remote compose -f docker-compose.dev.yaml up -d --build
+          docker -c remote compose -f docker-compose.dev.yaml up --build --pull always
 
       - name: cleanup
         run: rm -rf ~/.ssh
