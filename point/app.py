@@ -3,10 +3,10 @@ import logging
 from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.params import Depends
-from fastapi.security import HTTPBearer
+from prometheus_fastapi_instrumentator import Instrumentator
 from starlette.responses import JSONResponse
 
+from point.config import settings, AppEnv
 from point.errors import APIException
 from point.routes import router
 
@@ -87,3 +87,5 @@ async def validation_exception_handler(_: Request, exc: RequestValidationError):
 
 
 app.include_router(router, prefix=APP_BASE)
+
+Instrumentator().instrument(app).expose(app, tags=["Aux endpoints"], include_in_schema=settings.app_env != AppEnv.PROD)
