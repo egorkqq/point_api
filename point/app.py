@@ -88,4 +88,9 @@ async def validation_exception_handler(_: Request, exc: RequestValidationError):
 
 app.include_router(router, prefix=APP_BASE)
 
-Instrumentator().instrument(app).expose(app, tags=["Aux endpoints"], include_in_schema=settings.app_env != AppEnv.PROD)
+Instrumentator().instrument(app).expose(
+    app=app,
+    endpoint=APP_BASE + "/metrics",
+    tags=["Aux endpoints"],
+    include_in_schema=settings.app_env != AppEnv.PROD
+)
